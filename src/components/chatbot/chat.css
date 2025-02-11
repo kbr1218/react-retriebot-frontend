@@ -1,0 +1,96 @@
+/* chat.css */
+
+/* 채팅 박스 스타일 설정 */
+.chatbox {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 33vw;
+  margin: auto;
+  border: 1px solid #ff0000;
+}
+
+/* 챗봇 헤더 스타일 */
+.header {
+  display: inline-flex;
+  align-items: center;  
+  border: 1px solid #14ff92;
+}
+
+/* 챗봇 이름 스타일 */
+.hellovision_logo {
+  display: flex;
+  align-items: left;
+  width: 40%;
+}
+
+/* 메시지 영역 스타일 설정 */
+.messages {
+  flex-grow: 1;                 /* 가변 크기로 확장 */
+  flex-direction: column;       /* 세로 정렬 */
+  justify-content: flex-end;    /* 아래쪽 정렬 */
+  overflow-y: auto;             /* 세로 스크롤 가능 */
+  padding-right: 10px;          /* 스크롤바 공간 확보 */
+  padding-top: 10px;
+  padding-left: 10px;
+  border: 1px solid #ff14c8;
+}
+
+/* 메시지 기본 스타일 */
+.message {
+  display: flex;
+  align-items: flex-end;
+  max-width: 60%;
+  position: relative;
+  margin-bottom: 15px; /*메시지 간 간격 */
+  min-height: min-content; /*내용에 따라 최소 높이 설정 */
+}
+
+/* 채팅 입력칸 */ 
+.input {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding-top: 10px;
+  border: 1px solid #a7ff19;
+}
+
+/* 입력 필드 스타일 */
+.input input {
+  flex-grow: 1; /*버튼과 함께 자연스럽게 너비 조절*/
+  width: 80%;
+  height: 40px;
+  font-size: 16px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.input input::placeholder {
+  color: grey;
+}
+
+/* 버튼 기본 스타일 */
+.input button {
+  background-color: transparent;
+  border: none;
+  color: white;
+  font-size: 1.4em;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  justify-content: center;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+}
+
+
+/* 버튼 호버 효과 (마우스를 올렸을 때 색상 변경) */
+.mic_btn:hover,
+.send_btn:hover {
+  background-color: #d63d3d;
+}

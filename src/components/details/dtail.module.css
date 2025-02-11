@@ -1,0 +1,143 @@
+.m_container {
+  position: fixed;
+  left: 35%;
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 100%;
+  z-index: 2;
+  flex-direction: column;
+}
+
+.name {
+  font-size: 3vw;
+  font-weight: bold;
+}
+
+.actor_disp {
+  max-width: 80%;
+}
+
+.overview {
+  font-size: 1vw;
+  max-width: 50%;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  line-height: 1.3;
+}
+
+.info_box {
+  margin-top: 3%;
+  display: flex;
+}
+
+.group,
+.group2 {
+  display: flex;
+  flex-direction: column;
+  padding: 1%;
+  font-size: 2vh;
+  gap: 25px;
+}
+
+.watch_btn {
+  position: fixed;
+  background-color: #fd312e;
+  color: white;
+  font-size: 2vh;
+  border-radius: 30px;
+  padding: 15px 30px;
+  text-align: center;
+  display: inline-block;
+  cursor: pointer;
+  margin-left: 2vh;
+  bottom: 35%;
+  border: none;
+  outline: none;
+  z-index: 3;
+}
+
+.watch_btn:hover {
+  background-color: #e62a27;
+}
+
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popup_content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  max-width: 80%;
+}
+
+.popup_content p {
+  color: black;
+  font-size: 60px; /* 구매문구 크기*/
+  margin: 0;
+}
+
+.popup_buttons { /* 박스 크기*/
+  margin-top: 30px;
+}
+
+.popup_buttons button {
+  margin: 0 10px;
+  padding: 10px 20px;
+  font-size: 50px; /*구매 취소 버튼 크기*/
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  color: white;
+}
+
+.popup_buttons button:first-child {
+  background-color: #fd312e; /* 빨간색 */
+}
+
+.popup_buttons button:first-child:hover {
+  background-color: #e62a27; /* 더 진한 빨간색 */
+}
+
+.popup_buttons button:last-child {
+  background-color: gray; /* 회색 */
+}
+
+.popup_buttons button:last-child:hover {
+  background-color: darkgray; /* 더 진한 회색 */
+}
+
+
+.wait_message {
+  display: flex;
+  align-items: center;
+  font-size: 80px;
+}
+
+.poster_container {
+  display: flex;
+  overflow-x: auto;
+  margin-top: 20px;
+}
+
+.poster {
+  width: 100px;
+  height: 150px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.selected {
+  border: 3px solid white;
+}

@@ -1,0 +1,25 @@
+.backdrop_path {
+  background-size: cover;
+  background-position: center;
+  position: absolute;
+  z-index: 0;
+  opacity: 0.3;
+  right: 0.5%;
+}
+
+.backdrop_path img {
+  width: 65vw;
+  height: 90vh;
+  object-fit: cover;
+}
+
+.poster_path {
+  position: absolute;
+  top: 30%;
+  right: 10%;
+  z-index: 1;
+}
+.poster_path img{
+  width: 10vw;
+  height: 30vh;
+}
