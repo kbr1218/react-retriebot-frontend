@@ -33,7 +33,9 @@ const Chat = ({onMovieRecommendation}) => {
 
       // 리트리봇의 첫 메시지
       const initialMessage = {
-        text: "안녕하세요.  \n저는 **영화를 추천하는 리트리봇**이에요🐶!  \n🎥오늘은 어떤 영화를 보고싶으세요?  \n보고싶은 영화에 대해 설명해주시면 제가 영화를 물어올게요 멍멍🐶",
+        text: `안녕하세요.  \n저는 **영화를 추천하는 리트리봇**이에요! 
+          \n🎥오늘은 어떤 영화를 보고싶으세요?  
+          \n보고싶은 영화에 대해 설명해주시면 제가 영화를 물어올게요 멍멍!🐶`,
         isBot: true,
       }
       setMessages([initialMessage]);
@@ -44,8 +46,12 @@ const Chat = ({onMovieRecommendation}) => {
         const response = JSON.parse(event.data)
         console.log("서버 응답:", response)
 
+        // 응답에 추천받은 영화가 있다면
         if (response.movies) {
-          onMovieRecommendation(response)
+          // 추천 영화 목록 반환
+          const moviesArray = Object.values(response.movies);
+          setMovies(moviesArray);
+          onMovieRecommendation(moviesArray);
         }
         
         if (response.answer) {
@@ -196,9 +202,9 @@ const Chat = ({onMovieRecommendation}) => {
 
       {movies.length > 0 && (
         <>
-          <Mdetail response={movies} />
+          {/* <Mdetail response={movies} /> */}
           <Movierec response={movies} onMovieSelect={setSelectedMovie} />
-          {movies[0] && <Moimg response={movies[0]} />}
+          {/* {movies[0] && <Moimg response={movies[0]} />} */}
         </>
       )}
     </div>

@@ -21,14 +21,14 @@
 
 /* 챗봇 로고 스타일 */
 .avatar {
-  width: 35px;
-  height: 35px;
+  width: 38px;
+  height: 38px;
   object-fit: cover; /* 이미지가 찌그러지지 않도록 */
   margin-right: 5px; /* 메시지와 간격 */
   margin-bottom: 15px;
   /* 배경 설정 */
   border-radius: 50%;
-  background-color: rgb(251, 57, 57); 
+  background-color: rgb(252, 252, 252); 
   display: flex;
   align-items: center;
   justify-content: center;
