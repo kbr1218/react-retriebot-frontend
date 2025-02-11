@@ -1,6 +1,7 @@
 // chat.jsx
 import React, { useState, useEffect } from "react"
 import { useParams } from "react-router-dom"
+import ReactMarkdown from "react-markdown";
 import { FaMicrophone, FaPaperPlane } from "react-icons/fa"
 
 import "./chat.css"
@@ -32,7 +33,7 @@ const Chat = ({onMovieRecommendation}) => {
 
       // 리트리봇의 첫 메시지
       const initialMessage = {
-        text: "안녕하세요. 저는 영화를 물어다 줄 리트리봇이에요! 오늘은 어떤 영화를 보고싶으세요? 보고싶은 영화에 대해 설명해주시면 제가 찾아올게요  멍🐶",
+        text: "안녕하세요.  \n저는 **영화를 추천하는 리트리봇**이에요🐶!  \n🎥오늘은 어떤 영화를 보고싶으세요?  \n보고싶은 영화에 대해 설명해주시면 제가 영화를 물어올게요 멍멍🐶",
         isBot: true,
       }
       setMessages([initialMessage]);
@@ -73,6 +74,7 @@ const Chat = ({onMovieRecommendation}) => {
     };
   }, [serverUrl, user_id]);
 
+  // 현재 시간을 저장하는 함수
   const getCurrentTime = () => {
     const now = new Date()
     return `${now.getHours()}:${now.getMinutes() < 10 ? "0" + now.getMinutes() : now.getMinutes()}`
@@ -161,7 +163,9 @@ const Chat = ({onMovieRecommendation}) => {
             className={`message ${message.isBot ? "received" : "sent"}`}>
             {message.isBot && (<img className="avatar" src="img/retriebot.png" alt="RetrieBot" />)}
             <div className="message_container">
-              <div className="content">{message.text}</div>
+              <div className="content">
+                {message.isBot ? <ReactMarkdown>{message.text}</ReactMarkdown> : message.text}
+              </div>
               <span className={`time ${message.isBot ? "bot_time" : "user_time"}`}>
                 {message.timestamp}
               </span>
