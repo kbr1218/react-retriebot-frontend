@@ -5,7 +5,7 @@
   display: flex;
   flex-direction: column;
   height: 100vh;
-  width: 33vw;
+  width: 100%;
   margin: auto;
   border: 1px solid #ff0000;
 }
@@ -21,7 +21,7 @@
 .hellovision_logo {
   display: flex;
   align-items: left;
-  width: 40%;
+  width: 25%;
 }
 
 /* 메시지 영역 스타일 설정 */
@@ -33,6 +33,7 @@
   padding-right: 10px;          /* 스크롤바 공간 확보 */
   padding-top: 10px;
   padding-left: 10px;
+  width: 100%;
   border: 1px solid #ff14c8;
 }
 

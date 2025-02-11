@@ -1,5 +1,6 @@
+// App.jsx
 import React, { useState } from "react"; 
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import Chat from './components/chatbot/chat';
 import Mdetail from './components/details/modetail';
 import Movierec from './components/movie_list/movlist';
@@ -24,29 +25,32 @@ function App() {
     };
 
     return (
-        <BrowserRouter>
-            <div className="container">
-                
-                <div className="chats_part">
-                    <Chat onMovieRecommendation={onMovieRecommendation} />
-                </div>
+        <Router>
+            <Routes>
+                <Route path="/:user_id" element={
+                    <div className="container">
+                        <div className="chats_part">
+                            <Chat onMovieRecommendation={onMovieRecommendation} />
+                        </div>
 
-                <div className="movie_info_part">
-                    <div className="movie_part">
-                        <Movierec response={response} onMovieSelect={onMovieSelect} />
+                        <div className="movie_info_part">
+                            <div className="movie_part">
+                                <Movierec response={response} onMovieSelect={onMovieSelect} />
+                            </div>
+
+                            <div className="detail_part">
+                                <Mdetail />
+                            </div>
+
+                            <div className="moimg_part">
+                                <Moimg response={selectedMovie} />
+                            </div>
+                        </div>
                     </div>
-
-                    <div className="detail_part">
-                        <Mdetail />
-                    </div>
-
-                    <div className="moimg_part">
-                        <Moimg response={selectedMovie} />
-                    </div>
-                </div>
-
-            </div>
-        </BrowserRouter>
+                }
+                />
+            </Routes>
+        </Router>
     );
 }
 
