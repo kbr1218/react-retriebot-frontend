@@ -1,30 +1,23 @@
+// moimg.jsx
+import React from "react";
 import styles from "./img.module.css";
 
-const Moimg = ({ response  }) => {
-  if (!response) {
+const Moimg = ({ selectedMovie }) => {
+  if (!selectedMovie) {
     return null;
   }
 
   return (
-    <>
-      {response.backdrop_path && (
-        <div className={styles.backdrop_path}>
-          <img
-            src={`//image.tmdb.org/t/p/original${response.backdrop_path}`}
-            //alt="영화 배경"
-          />
-        </div>
+    <div class={styles.poster_container}>
+      {selectedMovie.poster_path && (
+        <img
+          src={`https://image.tmdb.org/t/p/w500${selectedMovie.poster_path}`}
+          alt={selectedMovie.title}
+          className={styles.poster_img}
+        />
       )}
-      
-      {response.poster_path && (
-        <div className={styles.poster_path}>
-          <img
-            src={`//image.tmdb.org/t/p/original${response.poster_path}`}
-            //alt="영화 포스터"
-          />
-        </div>
-      )}
-    </>
+      <button className={styles.watch_btn}>시청하기</button>
+    </div>
   );
 };
 
