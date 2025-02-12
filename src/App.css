@@ -36,7 +36,9 @@
   flex-direction: column;
   height: 100%;
   width: 70%;
-  overflow-y: auto;
+  overflow: hidden;
+  flex-grow: 1;
+  /* justify-content: space-between; */
 }
 
 /* 채팅창 */
@@ -46,4 +48,16 @@
   display: flex;
   overflow: hidden;
   font-family: "SemiBold";
+}
+
+/* 영화 추천 목록 (movlist.jsx) */
+.movie_part {
+  width: 100%;
+  height: 25%; 
+  /* padding-top: 10px; */
+  /* display: flex; */
+  /* align-self: flex-end; */
+  margin-top: auto;
+  align-items: center;
+  border: 1px solid #83eaff;
 }
