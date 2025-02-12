@@ -6,6 +6,7 @@ import styles from "./molist.module.css";
 
 const Movierec = ({ movie_list, onMovieSelect }) => {
   const [selectedIndex, setSelectedIndex] = useState(null);
+  const [hoverIndex, setHoverIndex] = useState(null);
 
   // `movie_list`가 배열인지 확인 후 변환
   const movies = Array.isArray(movie_list) && movie_list.length > 0
@@ -13,20 +14,17 @@ const Movierec = ({ movie_list, onMovieSelect }) => {
   : [];
 
   useEffect(() => {
-    console.log("🎬 Movierec.jsx - 받은 movie_list: (movlist)", movie_list);
-    console.log("🎬 변환된 movies 배열: (movlist", movies);
-
-    movies.forEach(movie => console.log("🎞️ 포스터 URL:", movie.poster_path));
-  }, [movies]);
+    if (movies.length > 0 && selectedIndex === null) {
+      setSelectedIndex(0);        // 첫번째 영화를 미리 선택해놓음
+      onMovieSelect(movies[0])
+    }
+  }, [movies, onMovieSelect, selectedIndex]);
 
 
   const handlePosterClick = (index) => {
     setSelectedIndex(index);
     onMovieSelect(movies[index]);
   };
-
-  // 기본 이미지 URL 설정
-  const defaultPoster = "https://via.placeholder.com/300x450?text=No+Image";
 
   return (
     <div className={styles.movie_recommendation}>
@@ -44,6 +42,8 @@ const Movierec = ({ movie_list, onMovieSelect }) => {
               key={movie.asset_id || index}
               className={`${styles.box} ${selectedIndex === index ? styles.selected : ""}`}
               onClick={() => handlePosterClick(index)}
+              onMouseEnter={() => setHoverIndex(index)}
+              onMouseLeave={() => setHoverIndex(null)}
             >
               {/* 포스터 이미지 출력 */}
               {movie.poster_path ? (
