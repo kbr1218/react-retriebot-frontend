@@ -1,5 +1,5 @@
 // chat.jsx
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useRef } from "react"
 import { useParams } from "react-router-dom"
 import ReactMarkdown from "react-markdown";
 import { FaMicrophone, FaPaperPlane } from "react-icons/fa"
@@ -8,7 +8,6 @@ import "./chat.css"
 import "./chat_bubbles.css"
 
 import Mdetail from "../details/modetail"
-import Movierec from "../movie_list/movlist"
 import Moimg from "../poster/moimg"
 
 const Chat = ({onMovieRecommendation}) => {
@@ -19,6 +18,8 @@ const Chat = ({onMovieRecommendation}) => {
   const [movies, setMovies] = useState([])
   const [selectedMovie, setSelectedMovie] = useState(null)
 
+  // 스크롤 제어
+  const messagesEndRef = useRef(null);
   const serverUrl = `ws://192.168.0.159:8001/${user_id}/chat`
 
   useEffect(() => {
@@ -49,7 +50,9 @@ const Chat = ({onMovieRecommendation}) => {
         // 응답에 추천받은 영화가 있다면
         if (response.movies) {
           // 추천 영화 목록 반환
-          const moviesArray = Object.values(response.movies);
+          const moviesArray = Object.values(response.movies); // 객체를 배열로 변환
+          console.log("🎬 변환된 movies 배열 (chat.jsx):", moviesArray);
+
           setMovies(moviesArray);
           onMovieRecommendation(moviesArray);
         }
@@ -64,7 +67,7 @@ const Chat = ({onMovieRecommendation}) => {
           ]);
         }
       } catch (error) {
-        console.erroe("메시지 처리 중 오류 발생", error)
+        console.error("메시지 처리 중 오류 발생", error)
       }
     };
 
@@ -79,6 +82,11 @@ const Chat = ({onMovieRecommendation}) => {
       ws.close();
     };
   }, [serverUrl, user_id]);
+
+  // 메시지가 추가될 때 스크롤을 가장 아래로 이동
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   // 현재 시간을 저장하는 함수
   const getCurrentTime = () => {
@@ -102,60 +110,6 @@ const Chat = ({onMovieRecommendation}) => {
       setInputMessage("");  // Clear input
     }
   };
-  // const onMovieRecommendation = (response) => {
-  //   if (response && response.movies) {
-  //     const moviesList = Object.values(response.movies)
-  //     setMovies(moviesList)
-  //   }
-  // }
-        // const time = getCurrentTime()
-        // let botMessage = ""
-
-        // if (response.answer && typeof response.answer === "string" && response.answer.trim()) {
-        //   botMessage = response.answer
-        // } else if (response.movies) {
-        //   botMessage = "추천된 영화 목록이 있습니다."
-        // } else {
-        //   console.error("response answer:", response)
-        //   return
-        // }
-
-    //     setMessages((prevMessages) => [...prevMessages, { text: botMessage, isBot: true, timestamp: time }])
-    //   } catch (error) {
-    //     console.error("메시지 처리 중 오류 발생:", error, "응답 데이터:", event.data)
-    //     setMessages((prevMessages) => [
-    //       ...prevMessages,
-    //       { text: "서버 응답을 처리하는 중 문제가 발생했습니다.", isBot: true, timestamp: getCurrentTime() },
-    //     ])
-    //   }
-    // }
-
-
-  // const handleSendMessage = () => {
-  //   if (inputMessage.trim() !== "" && socket && socket.readyState === WebSocket.OPEN) {
-  //     const time = getCurrentTime()
-  //     const newMessage = { text: inputMessage, isBot: false, timestamp: time }
-  //     setMessages((prevMessages) => [...prevMessages, newMessage])
-
-  //     const messagePayload = {
-  //       event: "send_message",
-  //       user_input: inputMessage,
-  //       user_id: userId,
-  //     }
-
-  //     try {
-  //       socket.send(JSON.stringify(messagePayload))
-  //       setInputMessage("")
-
-  //       setMessages((prevMessages) => [
-  //         ...prevMessages,
-  //         { text: "추천을 분석 중이에요.! 조금만 기다려 주세요..", isBot: true, timestamp: time, isLoading: true },
-  //       ])
-  //     } catch (error) {
-  //       console.error("메시지 전송 중 오류 발생:", error)
-  //     }
-  //   }
-  // }
 
   return (
     <div className="chatbox">
@@ -178,6 +132,7 @@ const Chat = ({onMovieRecommendation}) => {
             </div>
           </div>
         ))}
+        <div ref={messagesEndRef} /> {/* 자동 스크롤 */}
       </div>
 
       <div className="input">
@@ -199,14 +154,6 @@ const Chat = ({onMovieRecommendation}) => {
           <FaPaperPlane />
         </button>
       </div>
-
-      {movies.length > 0 && (
-        <>
-          {/* <Mdetail response={movies} /> */}
-          <Movierec response={movies} onMovieSelect={setSelectedMovie} />
-          {/* {movies[0] && <Moimg response={movies[0]} />} */}
-        </>
-      )}
     </div>
   )
 }

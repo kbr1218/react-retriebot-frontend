@@ -14,7 +14,6 @@
 .header {
   display: inline-flex;
   align-items: center;  
-  border: 1px solid #14ff92;
 }
 
 /* 챗봇 이름 스타일 */
@@ -30,11 +29,22 @@
   flex-direction: column;       /* 세로 정렬 */
   justify-content: flex-end;    /* 아래쪽 정렬 */
   overflow-y: auto;             /* 세로 스크롤 가능 */
-  padding-right: 10px;          /* 스크롤바 공간 확보 */
   padding-top: 10px;
   padding-left: 10px;
   width: 100%;
-  border: 1px solid #ff14c8;
+  scrollbar-width:auto;
+}
+/* 웹킷(Chrome, Safari)용 스크롤바 */
+.messages::-webkit-scrollbar {
+  width:7px;
+}
+.messages::-webkit-scrollbar-thumb {
+  background-color: #ffffff46;
+  border-radius: 10px;
+}
+/* 스크롤바 막대 (hover 효과) */
+.messages::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.664); /* 더 밝아지는 효과 */
 }
 
 /* 메시지 기본 스타일 */
@@ -54,7 +64,6 @@
   justify-content: space-between;
   width: 100%;
   padding-top: 10px;
-  border: 1px solid #a7ff19;
 }
 
 /* 입력 필드 스타일 */
@@ -72,6 +81,8 @@
 
 .input input::placeholder {
   color: grey;
+  font-family: "Medium";
+  font-size: 16px;
 }
 
 /* 버튼 기본 스타일 */
