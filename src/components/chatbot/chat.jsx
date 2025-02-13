@@ -1,87 +1,73 @@
 // chat.jsx
 import React, { useState, useEffect, useRef } from "react"
-import { useParams } from "react-router-dom"
 import ReactMarkdown from "react-markdown";
 import { FaMicrophone, FaPaperPlane } from "react-icons/fa"
 
 import "./chat.css"
 import "./chat_bubbles.css"
+import "./chat_loading.css"
 
-import Mdetail from "../details/modetail"
-import Moimg from "../poster/moimg"
-
-const Chat = ({onMovieRecommendation}) => {
-  const { user_id } = useParams();
+const Chat = ({onMovieRecommendation, socket}) => {
   const [messages, setMessages] = useState([])
   const [inputMessage, setInputMessage] = useState("")
-  const [socket, setSocket] = useState(null)
-  const [movies, setMovies] = useState([])
-  const [selectedMovie, setSelectedMovie] = useState(null)
-
+  const [isWaitingForResponse, setIsWaitingForResponse] = useState(false);
   // 스크롤 제어
   const messagesEndRef = useRef(null);
-  const serverUrl = `ws://192.168.0.159:8001/${user_id}/chat`
 
   useEffect(() => {
-    if (!user_id) return;
+    if (!socket) return;
 
-    const ws = new WebSocket(serverUrl);
+    const handleSocketOpen = () => {
+      console.log(">>>>>> 웹소켓 연결됨, 첫 메시지 전송");
 
-    // 웹소켓 연결 요청
-    ws.onopen = () => {
-      console.log(`웹소켓 연결 성공, ${serverUrl}`)
-      setSocket(ws)
-
-      // 리트리봇의 첫 메시지
       const initialMessage = {
         text: `안녕하세요.  \n저는 **영화를 추천하는 리트리봇**이에요! 
-          \n🎥오늘은 어떤 영화를 보고싶으세요?  
-          \n보고싶은 영화에 대해 설명해주시면 제가 영화를 물어올게요 멍멍!🐶`,
+        \n🎥 오늘은 어떤 영화를 보고 싶으세요?  
+        \n보고 싶은 영화에 대해 설명해 주시면 제가 추천해드릴게요! 🐶`,
         isBot: true,
-      }
-      setMessages([initialMessage]);
+        timestamp: getCurrentTime(),
+      };
+
+      setMessages((prev) => [...prev, initialMessage]);
     };
 
-    ws.onmessage = (event) => {
+    const handleMessage = (event) => {
       try {
         const response = JSON.parse(event.data)
-        console.log("서버 응답:", response)
+        console.log(">>>>>> 수신된 데이터:", response);
 
         // 응답에 추천받은 영화가 있다면
         if (response.movies) {
           // 추천 영화 목록 반환
           const moviesArray = Object.values(response.movies); // 객체를 배열로 변환
-          console.log("🎬 변환된 movies 배열 (chat.jsx):", moviesArray);
+          console.log(">>>>>> 변환된 movies 배열 (chat.jsx):", moviesArray);
 
-          setMovies(moviesArray);
+          // setMovies(moviesArray);
           onMovieRecommendation(moviesArray);
         }
         
         if (response.answer) {
-          const botMessage = response.answer;
-          const time = getCurrentTime();
-
-          setMessages((prevMessages) => [
-            ...prevMessages,
-            {text: botMessage, isBot: true, timestamp: time}
-          ]);
+          const botMessage = {
+            text: response.answer,
+            isBot: true,
+            timestamp: getCurrentTime(),
+          };
+          setMessages((prevMessages) => [...prevMessages, botMessage]);
         }
+        setIsWaitingForResponse(false);  // 응답을 받으면 다시 입력 가능하도록
       } catch (error) {
         console.error("메시지 처리 중 오류 발생", error)
+        setIsWaitingForResponse(false);  // 오류 발생 시 다시 입력이 가능하도록 복구
       }
     };
-
-    ws.onerror = (error) => {
-      console.error("웹소켓 에러:", error);
-    };
-    ws.onclose = () => {
-      console.log("웹소켓 연결 종료")
-    }
+    socket.addEventListener("open", handleSocketOpen);
+    socket.addEventListener("message", handleMessage);
 
     return () => {
-      ws.close();
+      socket.removeEventListener("open", handleSocketOpen);
+      socket.removeEventListener("message", handleMessage);
     };
-  }, [serverUrl, user_id]);
+  }, [socket]);
 
   // 메시지가 추가될 때 스크롤을 가장 아래로 이동
   useEffect(() => {
@@ -99,15 +85,16 @@ const Chat = ({onMovieRecommendation}) => {
       const messagePayload = {
         user_input: inputMessage,
       };
-      
-      // 시간 출력
-      const time = getCurrentTime();
-
       socket.send(JSON.stringify(messagePayload));                        // Send data
-      setMessages([...messages,
-                  { text: inputMessage, isBot: false , timestamp: time},
-      ]);  // Append user message
+
+      const userMessage = {
+        text: inputMessage,
+        isBot: false,
+        timestamp: getCurrentTime(),
+      };
+      setMessages((prev) => [...prev, userMessage]);
       setInputMessage("");  // Clear input
+      setIsWaitingForResponse(true);
     }
   };
 
@@ -132,11 +119,18 @@ const Chat = ({onMovieRecommendation}) => {
             </div>
           </div>
         ))}
+        {/* 로딩중 */}
+        {isWaitingForResponse && (
+          <div className="loader-container">
+            <div className="loader"></div>
+              <p className="loader-text">리트리봇이 영화를 물고 오는 중...🐕</p>
+          </div>
+        )}
         <div ref={messagesEndRef} /> {/* 자동 스크롤 */}
       </div>
 
       <div className="input">
-        <button className="mic_btn">
+        <button className="mic_btn" disabled={isWaitingForResponse}>
           <FaMicrophone />
         </button>
         <input
@@ -145,12 +139,13 @@ const Chat = ({onMovieRecommendation}) => {
           onChange={(e) => setInputMessage(e.target.value)}
           placeholder="리트리봇에게 메시지를 보내세요."
           onKeyPress={(e) => {
-            if (e.key === "Enter") {
+            if (e.key === "Enter" && !isWaitingForResponse) {
               handleSendMessage()
             }
           }}
+          disabled={isWaitingForResponse}     // 입력필드 비활성화
         />
-        <button className="send_btn" onClick={handleSendMessage}>
+        <button className="send_btn" onClick={handleSendMessage} disabled={isWaitingForResponse}>
           <FaPaperPlane />
         </button>
       </div>
