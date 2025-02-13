@@ -2,15 +2,17 @@
 import React from "react";
 import styles from "./img.module.css";
 
-const Moimg = ({ selectedMovie }) => {
+const Moimg = ({ selectedMovie, setIsModalOpen }) => {
   if (!selectedMovie) {
     return null;
   }
 
   // 포스터 이미지 URL 설정
-  const posterUrl = selectedMovie.poster_path?.startsWith("http")
+  const posterUrl = selectedMovie.poster_path
+    ? selectedMovie.poster_path.startsWith("http")
     ? selectedMovie.poster_path
-    : `https://image.tmdb.org/t/p/w500${selectedMovie.poster_path}`;
+    : `https://image.tmdb.org/t/p/w500${selectedMovie.poster_path}`
+    : null;
 
   return (
     <div class={styles.poster_container}>
@@ -25,7 +27,9 @@ const Moimg = ({ selectedMovie }) => {
           {selectedMovie.title}
         </div>
       )}
-      <button className={styles.watch_btn}>시청하기</button>
+      <button className={styles.watch_btn} onClick={() => setIsModalOpen(true)}>
+        시청하기
+      </button>
     </div>
   );
 };

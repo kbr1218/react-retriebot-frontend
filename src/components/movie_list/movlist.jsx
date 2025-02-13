@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./molist.module.css";
 
 
-const Movierec = ({ movie_list, onMovieSelect }) => {
+const Movierec = ({ movie_list, onMovieSelect, isModalOpen }) => {
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [hoverIndex, setHoverIndex] = useState(null);
 
@@ -22,16 +22,17 @@ const Movierec = ({ movie_list, onMovieSelect }) => {
 
 
   const handlePosterClick = (index) => {
+    if (isModalOpen) return;        // 모달이 열려 있으면 선택 불가
     setSelectedIndex(index);
     onMovieSelect(movies[index]);
   };
 
   return (
-    <div className={styles.movie_recommendation}>
+    <div className={`${styles.movie_recommendation} ${isModalOpen ? styles.modalActive : ""}`}>
       <div className={styles.box_container}>
         {/* 영화가 있을 때만 버튼 표시 */}
         {movies.length > 0 && (
-          <button className={`${styles.btn_left} ${styles.show}`}>
+          <button className={`${styles.btn_left} ${styles.show}`} disabled={isModalOpen}>
             <IoIosArrowBack />
           </button>
         )}
@@ -39,7 +40,7 @@ const Movierec = ({ movie_list, onMovieSelect }) => {
         {movies.length > 0 && (
           movies.map((movie, index) => (
             <div
-              key={movie.asset_id || index}
+              key={movie.asset_id}
               className={`${styles.box} ${selectedIndex === index ? styles.selected : ""}`}
               onClick={() => handlePosterClick(index)}
               onMouseEnter={() => setHoverIndex(index)}
@@ -65,7 +66,7 @@ const Movierec = ({ movie_list, onMovieSelect }) => {
 
         {/* 영화가 있을 때만 버튼 표시 */}
         {movies.length > 0 && (
-          <button className={`${styles.btn_right} ${styles.show}`}>
+          <button className={`${styles.btn_right} ${styles.show}`} disabled={isModalOpen}>
             <IoIosArrowForward />
           </button>
         )}
