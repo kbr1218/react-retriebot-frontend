@@ -22,8 +22,11 @@ const Mdetail = ({ selectedMovie }) => {
 
   // 개봉일 포맷
   const formattedReleaseDate = selectedMovie?.release_year
-  ? `${selectedMovie.release_year}-${selectedMovie.release_month || "00"}-${selectedMovie.release_day || "00"}`
-  : "-";
+    ? selectedMovie.release_month && selectedMovie.release_day
+      ? `${selectedMovie.release_year}-${selectedMovie.release_month.toString().padStart(2, "0")}-${selectedMovie.release_day.toString().padStart(2, "0")}`
+      : `${selectedMovie.release_year}`
+    : "-";
+
 
   // 상영 시간을 "n시간 n분" 형식으로 변환
   const formatRuntime = (minutes) => {
