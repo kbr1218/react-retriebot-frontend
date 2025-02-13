@@ -55,12 +55,12 @@
 
 /* 마우스 오버 시 크기 조정 */
 .poster_path:hover {
-    transform: scale(0.9); /* 원래 크기로 */
+    transform: scale(1); /* 원래 크기로 */
 }
 /* 선택된 포스터 강조 */
 .selected .poster_path{
   border: 3px solid white;
-  transform: scale(0.9); /* 선택되거나 마우스를 올릴 때 크기 확대 */
+  transform: scale(1); /* 선택되거나 마우스를 올릴 때 크기 확대 */
   transition: transform 0.2s ease-in-out, border 0.2s ease-in-out;
 }
 
