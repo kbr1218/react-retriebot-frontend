@@ -14,11 +14,11 @@ const Movierec = ({ movie_list, onMovieSelect }) => {
   : [];
 
   useEffect(() => {
-    if (movies.length > 0 && selectedIndex === null) {
+    if (movies.length > 0) {
       setSelectedIndex(0);        // 첫번째 영화를 미리 선택해놓음
       onMovieSelect(movies[0])
     }
-  }, [movies, onMovieSelect, selectedIndex]);
+  }, [movie_list]);
 
 
   const handlePosterClick = (index) => {
