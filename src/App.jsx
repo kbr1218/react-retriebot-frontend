@@ -1,26 +1,53 @@
 // App.jsx
-import React, { useState } from "react"; 
-import { BrowserRouter as Router, Route, Routes} from 'react-router-dom';
+import React, { useEffect, useState } from "react"; 
+import { Route, Routes, useParams } from 'react-router-dom';
 import Chat from './components/chatbot/chat';
-import Mdetail from './components/details/modetail';
+import Mdetail from './components/details/movdetail';
 import Movierec from './components/movie_list/movlist';
 import Moimg from './components/poster/moimg';
+import MovieBackground from "./components/movie_bg/movie_background";
+import WatchNowModal from "./modal/watch_now";
 
 import './App.css';
 
-function App() {
+function AppWrapper() {
+    const { user_id } = useParams();
+    return <App user_id={user_id} />;
+}
+
+function App( {user_id} ) {
+    // const { user_id } = useParams();
     // 추천 영화 목록을 저장할 상태
     const [movies, setMovies] = useState([]);
     // 선택된 영화 정보를 저장할 상태
     const [selectedMovie, setSelectedMovie] = useState(null);
+    // watch now 모달 상태
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    // 웹소켓
+    const [socket, setSocket] = useState(null);
+
+    useEffect(() => {
+        if (!user_id) return;
+
+        const serverUrl = `ws://192.168.0.159:8001/${user_id}/chat`;
+        const ws = new WebSocket(serverUrl);
+        setSocket(ws);
+
+        ws.onopen = () => console.log(`>>>>>> 웹소켓 연결 성공: ${serverUrl}`);
+        ws.onmessage = (event) => console.log(">>>>>> 메시지 수신:", event.data);
+        ws.onerror = (error) => console.error(">>>>>> 웹소켓 에러:", error);
+        ws.onclose = () => console.log(">>>>>> 웹소켓 연결 종료");
+
+        return () => ws.close();
+    }, [user_id]);
 
     // Chat에서 받은 영화 추천 데이터를 저장하는 함수
     const onMovieRecommendation = (responseData) => {
         console.log("📩 Chat에서 전달받은 영화 데이터 (app.jsx):", responseData);
 
-        // setResponse(responseData); // 서버 응답을 받아 상태에 저장
         if (Array.isArray(responseData) && responseData.length > 0) {
             setMovies(responseData);
+            setSelectedMovie(responseData[0]);
           } else {
             console.warn("🚨 잘못된 영화 데이터 형식:", responseData);
           }
@@ -28,41 +55,56 @@ function App() {
 
     // 영화 선택 시 호출되는 함수
     const onMovieSelect = (movie) => {
-        setSelectedMovie(movie); // 선택된 영화 정보를 상태에 저장
+        if (!isModalOpen) {
+            setSelectedMovie(movie); // 선택된 영화 정보를 상태에 저장
+        }
     };
 
     return (
-        <Router>
-            <Routes>
-                <Route path="/:user_id" element={
+        <Routes>
+            <Route path="/:user_id" element={<AppWrapper />} />
+                <Route path="/" element={
                     <div className="container">
                         {/* 왼쪽 채팅 화면 */}
                         <div className="chats_part">
-                            <Chat onMovieRecommendation={onMovieRecommendation} />
+                            <Chat onMovieRecommendation={onMovieRecommendation} socket={socket} />
                         </div>
 
                         {/* 오른쪽 영화 정보 화면 */}
                         <div className="movie_info_part">
+
+                            {/* 🎬 배경 이미지 설정 */}
+                            <MovieBackground selectedMovie={selectedMovie} />
+
+                            {/* 🎬 영화 상세 정보 */}
                             <div className="detail_part">
-                                <Mdetail />
+                                <div className="text_part">
+                                    <Mdetail selectedMovie={selectedMovie} />
+                                </div>
+                                <div className="poster_part">
+                                    <Moimg
+                                        selectedMovie={selectedMovie}
+                                        socket={socket}
+                                        setIsModalOpen={setIsModalOpen}
+                                    />
+                                </div>
                             </div>
-
-                            {/*  선택된 영화의 포스터 */}
-                            <div className="moimg_part">
-                                <Moimg response={selectedMovie} />
-                            </div>
-
-                            {/* 영화 추천 목록 (movlist) => 가장 하단으로 이동 */}
+                            {/* 영화 추천 목록 (movlist) */}
                             <div className="movie_part">
-                                <Movierec movie_list={movies} onMovieSelect={setSelectedMovie} />
+                                <Movierec movie_list={movies}
+                                          onMovieSelect={onMovieSelect}
+                                          isModalOpen={isModalOpen}/>
                             </div>
-
                         </div>
+                        {/* 구매 모달 */}
+                        <WatchNowModal isOpen={isModalOpen}
+                                       onClose={()=> setIsModalOpen(false)}
+                                       selectedMovie={selectedMovie}
+                                       socket={socket}/>
                     </div>
-                }/>
+            } />
             </Routes>
-        </Router>
-    );
+        );
 }
 
 export default App;
