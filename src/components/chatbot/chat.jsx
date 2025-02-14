@@ -111,7 +111,7 @@ const Chat = ({onMovieRecommendation, socket}) => {
             {message.isBot && (<img className="avatar" src="img/retriebot.png" alt="RetrieBot" />)}
             <div className="message_container">
               <div className="content">
-                {message.isBot ? <ReactMarkdown>{message.text}</ReactMarkdown> : message.text}
+                {message.isBot ? <ReactMarkdown breaks={true}>{message.text}</ReactMarkdown> : message.text}
               </div>
               <span className={`time ${message.isBot ? "bot_time" : "user_time"}`}>
                 {message.timestamp}
