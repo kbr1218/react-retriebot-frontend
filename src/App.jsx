@@ -23,6 +23,8 @@ function App( {user_id} ) {
     const [selectedMovie, setSelectedMovie] = useState(null);
     // watch now 모달 상태
     const [isModalOpen, setIsModalOpen] = useState(false);
+    // 로딩 상태 (버튼 못 누르게)
+    const [isWaitingForResponse, setIsWaitingForResponse] = useState(false);
     // 웹소켓
     const [socket, setSocket] = useState(null);
 
@@ -67,7 +69,10 @@ function App( {user_id} ) {
                     <div className="container">
                         {/* 왼쪽 채팅 화면 */}
                         <div className="chats_part">
-                            <Chat onMovieRecommendation={onMovieRecommendation} socket={socket} />
+                            <Chat onMovieRecommendation={onMovieRecommendation}
+                            socket={socket}
+                            isWaitingForResponse={isWaitingForResponse}
+                            setIsWaitingForResponse={setIsWaitingForResponse}/>
                         </div>
 
                         {/* 오른쪽 영화 정보 화면 */}
@@ -85,6 +90,7 @@ function App( {user_id} ) {
                                     <Moimg
                                         selectedMovie={selectedMovie}
                                         socket={socket}
+                                        setIsWaitingForResponse={setIsWaitingForResponse}
                                         setIsModalOpen={setIsModalOpen}
                                     />
                                 </div>

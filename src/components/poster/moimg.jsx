@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import styles from "./img.module.css";
 import WatchNowModal from "../../modal/watch_now";
 
-const Moimg = ({ selectedMovie, socket }) => {
+const Moimg = ({ selectedMovie, socket, isWaitingForResponse  }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   if (!selectedMovie) {
@@ -31,7 +31,9 @@ const Moimg = ({ selectedMovie, socket }) => {
           {selectedMovie.title}
         </div>
       )}
-      <button className={styles.watch_btn} onClick={() => setIsModalOpen(true)}>
+      <button className={styles.watch_btn}
+        onClick={() => setIsModalOpen(true)}
+        disabled={isWaitingForResponse}>
         시청하기
       </button>
     </div>

@@ -16,19 +16,12 @@ const WatchNowModal = ({ isOpen, onClose, selectedMovie, socket }) => {
     const WatchNowPayload = {
       event: "watch_now",
       asset_id: selectedMovie.asset_id,
-      runtime: selectedMovie.runtime || 0
     }
     // 웹소켓 요청 전송
     socket.send(JSON.stringify(WatchNowPayload));
     console.log(">>>>>> 시청 요청 전송: ", WatchNowPayload);
     
-    onClose(); // 모달 닫기
-    // setShowSuccess(true);
-
-    // // 3초 후 성공 메시지 숨기기
-    // setTimeout(() => {
-    //   setShowSuccess(false);
-    // }, 3000);
+    onClose();
   };
 
   useEffect(() => {

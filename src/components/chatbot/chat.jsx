@@ -7,10 +7,9 @@ import "./chat.css"
 import "./chat_bubbles.css"
 import "./chat_loading.css"
 
-const Chat = ({onMovieRecommendation, socket}) => {
+const Chat = ({onMovieRecommendation, socket, isWaitingForResponse, setIsWaitingForResponse }) => {
   const [messages, setMessages] = useState([])
   const [inputMessage, setInputMessage] = useState("")
-  const [isWaitingForResponse, setIsWaitingForResponse] = useState(false);
   // 스크롤 제어
   const messagesEndRef = useRef(null);
 
@@ -123,7 +122,7 @@ const Chat = ({onMovieRecommendation, socket}) => {
         {isWaitingForResponse && (
           <div className="loader-container">
             <div className="loader"></div>
-              <p className="loader-text">리트리봇이 영화를 물고 오는 중...🐕</p>
+              <p className="loader-text">리트리봇이 영화를 물고 오는 중...🦴</p>
           </div>
         )}
         <div ref={messagesEndRef} /> {/* 자동 스크롤 */}
