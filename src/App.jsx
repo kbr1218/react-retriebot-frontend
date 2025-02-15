@@ -31,7 +31,7 @@ function App( {user_id} ) {
     useEffect(() => {
         if (!user_id) return;
 
-        const serverUrl = `ws://192.168.0.159:8001/${user_id}/chat`;
+        const serverUrl = `ws://localhost:8001/${user_id}/chat`;
         const ws = new WebSocket(serverUrl);
         setSocket(ws);
 
@@ -90,7 +90,7 @@ function App( {user_id} ) {
                                     <Moimg
                                         selectedMovie={selectedMovie}
                                         socket={socket}
-                                        setIsWaitingForResponse={setIsWaitingForResponse}
+                                        isWaitingForResponse={isWaitingForResponse}
                                         setIsModalOpen={setIsModalOpen}
                                     />
                                 </div>
