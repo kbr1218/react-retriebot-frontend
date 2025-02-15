@@ -27,12 +27,30 @@ const Movierec = ({ movie_list, onMovieSelect, isModalOpen }) => {
     onMovieSelect(movies[index]);
   };
 
+  // 왼쪽 버튼 클릭 시 이동
+  const handleLeftClick = () => {
+    if (movies.length === 0) return;
+    const newIndex = selectedIndex === 0 ? movies.length - 1 : selectedIndex - 1;
+    setSelectedIndex(newIndex);
+    onMovieSelect(movies[newIndex]);
+  };
+
+  // 오른쪽 버튼 클릭 시 이동
+  const handleRightClick = () => {
+    if (movies.length === 0) return;
+    const newIndex = selectedIndex === movies.length - 1 ? 0 : selectedIndex + 1;
+    setSelectedIndex(newIndex);
+    onMovieSelect(movies[newIndex]);
+  };
+
   return (
     <div className={`${styles.movie_recommendation} ${isModalOpen ? styles.modalActive : ""}`}>
       <div className={styles.box_container}>
         {/* 영화가 있을 때만 버튼 표시 */}
         {movies.length > 0 && (
-          <button className={`${styles.btn_left} ${styles.show}`} disabled={isModalOpen}>
+          <button className={`${styles.btn_left} ${styles.show}`}
+                  disabled={isModalOpen}
+                  onClick={handleLeftClick}>
             <IoIosArrowBack />
           </button>
         )}
@@ -66,7 +84,9 @@ const Movierec = ({ movie_list, onMovieSelect, isModalOpen }) => {
 
         {/* 영화가 있을 때만 버튼 표시 */}
         {movies.length > 0 && (
-          <button className={`${styles.btn_right} ${styles.show}`} disabled={isModalOpen}>
+          <button className={`${styles.btn_right} ${styles.show}`}
+                  disabled={isModalOpen}
+                  onClick={handleRightClick}>
             <IoIosArrowForward />
           </button>
         )}

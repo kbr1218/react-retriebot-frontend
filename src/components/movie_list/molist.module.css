@@ -30,11 +30,15 @@
 
 .poster_path {
     height: 22vh;
-    width: 8vw;
+    width: auto;
     transform: scale(0.8);
     transition: transform 0.2s ease-in-out;
     border-radius: 5px;
     object-fit: cover;
+}
+/* 마우스 오버 시 크기 조정 */
+.poster_path:hover {
+  transform: scale(1); /* 원래 크기로 */
 }
 
 /* 포스터가 없는 경우 제목을 표시하는 스타일 */
@@ -55,20 +59,15 @@
   transform: scale(0.8);
   transition: transform 0.2s ease-in-out, border 0.2s ease-in-out;
 }
-
-/* 마우스 오버 시 크기 조정 */
-.poster_path:hover {
-    transform: scale(1); /* 원래 크기로 */
+/* 마우스 오버 시 크기 확대 */
+.poster_placeholder:hover {
+  transform: scale(1); /* 원래 크기로 */
 }
+
+
 /* 선택된 포스터 강조 */
+.selected .poster_placeholder,
 .selected .poster_path{
-  border: 3px solid white;
-  transform: scale(1); /* 선택되거나 마우스를 올릴 때 크기 확대 */
-  transition: transform 0.2s ease-in-out, border 0.2s ease-in-out;
-}
-
-/* 선택된 포스터 강조 (플레이스 홀더) */
-.selected .poster_placeholder {
   border: 3px solid white;
   transform: scale(1); /* 선택되거나 마우스를 올릴 때 크기 확대 */
   transition: transform 0.2s ease-in-out, border 0.2s ease-in-out;
