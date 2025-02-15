@@ -20,9 +20,10 @@ const Chat = ({onMovieRecommendation, socket, isWaitingForResponse, setIsWaiting
       console.log(">>>>>> 웹소켓 연결됨, 첫 메시지 전송");
 
       const initialMessage = {
-        text: `안녕하세요.  \n저는 **영화를 추천하는 리트리봇**이에요! 
-        \n🎥 오늘은 어떤 영화를 보고 싶으세요?  
-        \n보고 싶은 영화에 대해 설명해 주시면 제가 추천해드릴게요! 🐶`,
+        text: `안녕하세요!  \n저는 **영화를 추천하는 리트리봇**이에요! 
+        \n 🎥먼저, 사용자님의 최근 시청 기록을 바탕으로 영화를 추천해드릴게요.
+        \n 다음 영화 중 관심 있는 작품이 있나요?
+        \n 또는 보고 싶은 영화 스타일을 말씀해주시면 제가 추천해드릴게요! 🐶`,
         isBot: true,
         timestamp: getCurrentTime(),
       };

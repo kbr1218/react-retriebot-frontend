@@ -79,6 +79,7 @@
   border-radius: 5px;
   outline: none;
   box-sizing: border-box;
+  font-family: "Medium";
 }
 
 .input input::placeholder {
