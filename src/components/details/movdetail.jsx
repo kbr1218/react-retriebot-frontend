@@ -46,8 +46,20 @@ const Mdetail = ({ selectedMovie }) => {
     return actors.length > 40 ? `${actors.slice(0, 40)}...` : actors;
   };
 
-  // 영화 정보가 없다면 "-" 반환
-  const getVaildData = (value) => (value ? value: "-");
+// 영화 정보가 없다면 "-" 반환 (값이 "NaN"이거나 null, undefined, 빈 문자열일 경우)
+const getValidData = (value) => {
+  if (value === null || value === undefined || value === "" || value === "NaN") {
+    return "-";
+  }
+  
+  // 숫자인 경우 NaN 여부 체크 후 변환
+  if (typeof value === "number" && isNaN(value)) {
+    return "-";
+  }
+
+  return value;
+};
+
 
   return (
     <>
@@ -59,11 +71,11 @@ const Mdetail = ({ selectedMovie }) => {
       <div className={`${styles.m_container} ${showFullOverview ? styles.full_screen_overlay_active : ""}`}>
       {/* 영화 제목 및 추가 정보 (출시 연도, 원제, 장르) */}
         <div className={styles.title_container}>
-          <div className={styles.title}>{getVaildData(selectedMovie?.title)}</div>
+          <div className={styles.title}>{getValidData(selectedMovie?.title)}</div>
           <div className={styles.sub_info}>
-            <span>{getVaildData(selectedMovie?.release_year)}</span>  |  
-            <span>{getVaildData(selectedMovie?.original_title)}</span>  |
-            <span>{getVaildData(selectedMovie?.genre)}</span>
+            <span>{getValidData(selectedMovie?.release_year)}</span>  |  
+            <span>{getValidData(selectedMovie?.original_title)}</span>  |
+            <span>{getValidData(selectedMovie?.genre)}</span>
           </div>
         </div>
 
@@ -92,11 +104,11 @@ const Mdetail = ({ selectedMovie }) => {
       <div className={styles.info_box}>
           <div>개봉일: {formattedReleaseDate}</div>
           <div>상영 시간: {formatRuntime(selectedMovie?.runtime)}</div>
-          <div>감독: {getVaildData(selectedMovie?.director)}</div>
+          <div>감독: {getValidData(selectedMovie?.director)}</div>
           <div>출연: {truncateActors(selectedMovie?.actors)}</div>
           <div>평점: {formatVoteAverage(selectedMovie?.vote_average)}</div>
-          <div>제작 국가: {getVaildData(selectedMovie?.orgnl_cntry)}</div>
-          <div>언어: {getVaildData(selectedMovie?.original_language)}</div>
+          <div>제작 국가: {getValidData(selectedMovie?.orgnl_cntry)}</div>
+          <div>언어: {getValidData(selectedMovie?.original_language)}</div>
         </div>
       </div>
     </>
