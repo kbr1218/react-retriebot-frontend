@@ -16,7 +16,6 @@ function AppWrapper() {
 }
 
 function App( {user_id} ) {
-    // const { user_id } = useParams();
     // 추천 영화 목록을 저장할 상태
     const [movies, setMovies] = useState([]);
     // 선택된 영화 정보를 저장할 상태

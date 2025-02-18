@@ -86,7 +86,7 @@ const getValidData = (value) => {
             selectedMovie?.overview
           ) : (
             <>
-              {selectedMovie?.overview.slice(0, 100)}...
+              {selectedMovie?.overview.slice(0, 100)}
               <button
                 className={styles.readmore_btn}
                 onClick={(e) => {

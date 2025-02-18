@@ -101,7 +101,7 @@ const Chat = ({onMovieRecommendation, socket, isWaitingForResponse, setIsWaiting
   return (
     <div className="chatbox">
       <div className="header">
-        <img className="hellovision_logo" src="/img/CI_White.png" alt="hellovision_logo"/>
+        <img className="hellovision_logo" src="/img/CI_white2.png" alt="hellovision_logo"/>
       </div>
 
       <div className="messages">

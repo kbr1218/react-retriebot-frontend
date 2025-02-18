@@ -33,8 +33,8 @@
 }
 
 .title {
-  font-size: 3vw; /* 화면 크기에 비례하여 조정 */
-  font-family: "Bold"; /* Bold 폰트 적용 */
+  font-size: 3vw;
+  font-family: "Bold"; 
   color: white;
   text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.7); /* 가독성을 위한 그림자 */
   letter-spacing: 1px;                           /* 글자 간격 조정 */
